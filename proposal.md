@@ -1,6 +1,6 @@
 # Plant Quizzes
 ### Goal and Audience
-This web app will allow users to test thier knowledge of plants from around the world. It will produce quizzes where each question is a plant image with multiple choices from which to select the correct common name. Users can see how many they got right and find out more information about each plant on their quiz. 
+This web app will allow users to test their knowledge of plants from around the world. It will produce quizzes where each question is a plant image with multiple choices from which to select the correct common name. Users can see how many they got right and find out more information about each plant on their quiz. 
 
 There will be two difficulty levels. Easy quizzes will have wrong answers selected from different plant families from the correct answer, while hard quizzes will have the wrong answers selected from similar plants.
 
