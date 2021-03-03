@@ -1,0 +1,44 @@
+# This text can reproduce the database schema
+# at quickdatabasediagrams.com
+Quiz
+-
+id PK
+num_questions int
+
+Quiz_attempt
+-
+id
+user_id int FK >- User.id
+quiz_id int FK >- Quiz.id
+timestamp datetime
+num_correct int
+
+User
+-
+id PK
+username string
+password string
+
+Quiz_questions
+-
+id PK
+quiz_id int FK >- Quiz.id
+question_id int FK >- Question.id
+
+Question
+-
+id PK
+image_url string
+difficulty string
+correct_answer string
+wrong_answer_1 string
+wrong_answer_2 string
+wrong_answer_3 string
+
+Question_attempt
+-
+id PK
+attempt_id int FK >- Quiz_attempt.id
+question_id int FK >- Question.id
+answer_given string
+correct bool
