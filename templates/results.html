@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Quiz Results{% endblock %}
+
+{% block content %}
+<h1>{{quiz.family | title}} Quiz {{ quiz.num_by_family }}</h1>
+<h4>You got {{ score }} of 10 answers correct!</h4>
+<div class="card-section">
+<div class="row wrap-row">
+{% for i in range(quiz.num_questions) %}
+    <div class="col s12 l6">
+        <div class="card-panel green lighten-4 z-depth-3">
+            <div class="image-div">
+                <img src="{{quiz.questions[i].url}}" 
+                    alt="{{quiz.questions[i].correct_answer}}" 
+                    class="center-img materialboxed responsive-img z-depth-1">
+            </div>
+            
+            <h6>
+                <span class="brown-text text-darken-4">
+                    Correct answer: {{quiz.questions[i].correct_answer}}
+                </span>
+                <br>
+                {% if quiz.questions[i].correct_answer != results[i] %}
+                <span class="amber-text text-darken-4">(you answered {{results[i]}})</span>
+                {% endif %}
+            </h6>
+            <a href="/plant/{{quiz.questions[i].slug}}" class="btn waves-effect waves-light">
+                Learn more
+            </a>
+
+        </div>
+
+    </div>
+{% endfor %}
+</div>
+</div>
+
+{% if g.user %}
+<a href="/quiz/all" class="btn-large waves-effect waves-light">Try another quiz</a>
+<a href="/user/quizzes" class="btn-large waves-effect waves-light">See my quiz results summary</a>
+<a href="/user/plants" class="btn-large waves-effect waves-light">Review plants</a>
+{% else %}
+<a href="/" class="btn-large waves-effect waves-light">Try another quiz</a>
+{% endif %}
+{% endblock %}

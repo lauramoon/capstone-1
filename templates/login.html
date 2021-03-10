@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Log In{% endblock %}
+
+{% block content %}
+
+<div class="row purple lighten-4 z-depth-3 user-div">
+  <div class="col">
+    <h2>Sign In</h2>
+    <form method="POST" id="user_form">
+        {{ form.hidden_tag() }}
+
+        {% for field in form if field.widget.input_type != 'hidden' %}
+        <div class="input-field">
+          
+          {% for error in field.errors %}
+            <span class="red-text">{{ error }}</span>
+          {% endfor %}
+          {{ field(class="validate") }}
+          {{ field.label(class="grey-text text-darken-2") }}
+        </div>
+        {% endfor %}
+      
+      <button class="btn waves-effect waves-light">Log In</button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}My Quizzes{% endblock %}
+
+{% block content %}
+
+<h1>{{g.user.username}}'s Quizzes</h1>
+
+<div class="red lighten-4 z-depth-3 user-quizzes">
+<table class="striped">
+    <thead>
+        <tr>
+            <th>Quiz Name</th>
+            <th>Latest Result</th>
+            <th>Taken On</th>
+            <th>Total Attempts</th>
+            <th>Average Score</th>
+            <th>Try Again</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for attempt in latest_attempts %}
+        <tr>
+            <td>{{ attempt.quiz.family | title }} Quiz {{ attempt.quiz.num_by_family }}</td>
+            <td>{{ attempt.latest }} of {{ attempt.quiz.num_questions }}</td>
+            <td>{{ attempt.timestamp }}</td>
+            <td>{{ attempt.num_attempts}}</td>
+            <td>{{ attempt.average}} of 10</td>
+            <td><a href="/quiz/{{attempt.quiz.id}}" class="btn waves-effect waves-light">
+                Take Again
+            </a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+<a href="/quiz/all" class="btn-large waves-effect waves-light">See all available quizzes</a>
+<a href="/user/plants" class="btn-large waves-effect waves-light">Review plants</a>
+{% endblock %}

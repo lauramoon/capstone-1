@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ plant.common_name | title }}{% endblock %}
+
+{% block content %}
+
+<div class="green lighten-4 z-depth-3">
+    <h1>{{ plant.common_name | title }}</h1>
+        <img src="{{plant.image_url}}" 
+            alt="{{ plant.common_name }}" 
+            class="center-image responsive-img z-depth-1">
+        <h5>Scientific name: <em>{{plant.scientific_name}}</em></h5>
+        <h5>Family: {{plant.family_common_name}}</h5>
+        {% if 'observations' in plant %}
+            <h5>Where it grows: {{plant.observations}}</h5>
+        {% endif %}
+    
+    {% if 'main_species' in plant %}
+        {% if plant.main_species.edible %}
+            <h5>This plant is edible.</h5>
+        {% endif %}
+        <div class="row">
+            <div class="col s12">
+                <h5>Learn more on 
+                    <a href="https://en.wikipedia.org/w/index.php?title={{search_slug}}">Wikipedia</a>
+                </h5>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s8 offset-s2 purple lighten-4 z-depth-2">
+                {% if 'images' in plant.main_species %}
+                <h3>Images</h3>
+                {% for (key, value) in plant.main_species.images.items() %}
+                    <h4>{{key}}</h4>
+                    <img src="{{ value[0].image_url }}" 
+                        alt="{{plant.common_name}} {{key}}"
+                        class="materialboxed center-img card-img responsive-img z-depth-1" 
+                        width="300">
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+
+{% endblock %}

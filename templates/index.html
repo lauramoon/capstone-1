@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Plant Quizzes{% endblock %}
+
+{% block content %}
+<h1>Plant Quizzes</h1>
+<h4>Can you identify plants from around the world? </h4>
+<h6>Test your knowledge and learn new things with simple quizzes.</h6>
+
+<div class="row red lighten-4 z-depth-3 index-info">
+    <div class="col s12 l6">
+        <h3>Take a Quiz</h3>
+        {% if quizzes | length > 4 %} {# (for tests with no quizzes) #}
+        {% for i in range(3 if g.user else 5) %}
+        <p><a href="/quiz/{{quizzes[i].id}}" class="btn waves-effect waves-light">
+            {{quizzes[i].family}} Quiz {{quizzes[i].num_by_family}}
+        </a></p>
+        {% endfor %}
+        {% endif %}
+        {% if g.user %}
+        <a href="/quiz/all" class="btn-large waves-effect waves-light">See all available quizzes</a>
+        {% endif %}
+    </div>
+    <div class="col s12 l6">
+        <h3>Track Your Progress</h3>
+        {% if g.user %}
+        <p><a href="user/quizzes" class="waves-effect waves-light btn-large">Quiz Results</a></p>
+        <p><a href="user/plants" class="waves-effect waves-light btn-large">Review Plants</a></p>
+
+        {% else %}
+        <a href="/signup" class="waves-effect waves-light btn-large">Sign Up</a>
+        <h6>or</h6>
+        <a href="/login" class="waves-effect waves-light btn-large">Log In</a>
+        <h6>to</h6>
+        <div class="register-benefits">
+            <h5>Save your quiz results</h5>
+            <h5>Access additional quizzes</h5>
+            <h5>And more!</h5>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Plant Quiz{% endblock %}
+
+{% block content %}
+<h1>{{quiz.family | title}} Quiz {{ quiz.num_by_family }}</h1>
+<h4>What is the common name of each plant shown below?</h4>
+
+<div class="card-section">
+<form method="POST" id="quiz_form">
+    {{ form.hidden_tag() }}
+    <div class="row wrap-row">
+      {% for question in form.questions if question.widget.input_type != 'hidden' %}
+      <div class="col s12 l6">
+        {{ question.hidden_tag() }}
+        <div class="card-panel green lighten-4 z-depth-3">
+
+          <div class="image-div">
+            <img src="{{ question.answers.label }}" 
+            alt="Quiz image" 
+            class="materialboxed responsive-img center-img card-img z-depth-1">
+          </div>
+
+          {% for error in question.errors %}
+          <span class="red-text">{{ error }} required</span>
+          {% endfor %}
+          <div class="answer-div">
+              {% for answer in question.answers %}
+              <label>
+                  {{ answer }}
+                  <span class="choice-span grey-text text-darken-2">{{ answer.label.text }}</span>
+              </label>
+              {% endfor %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <button class="btn waves-effect waves-light quiz-submit">See results</button>
+</form>
+</div>
+{% endblock %}
