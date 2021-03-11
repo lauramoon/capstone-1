@@ -9,7 +9,11 @@ try:
 except:
     pass
 
-TOKEN = os.getenv("TREFLE_TOKEN", config.TREFLE_TOKEN)
+try:
+    TOKEN = config.TREFLE_TOKEN
+except:
+    TOKEN = os.getenv("TREFLE_TOKEN")
+    
 BASE_URL = f'https://trefle.io/api/v1/plants'
 
 
