@@ -10,6 +10,10 @@ BASE_URL = f'https://trefle.io/api/v1/plants'
 
 
 def create_quiz(family):
+    """Create lists of plants with fields needed 
+    to create quiz of given family. If any API calls fail,
+    returns False"""
+
     plant_list = []
     answers = []
 
@@ -17,10 +21,17 @@ def create_quiz(family):
 
     page_range = get_range(family)
 
-    for page in random.sample(range(1, page_range), 10):
+    if page_range < 11:
+        return False
+
+    for page in random.sample(range(1, page_range - 1), 10):
         (more_answers, plant) = get_data(page, family_url)
-        plant_list.append(plant)
-        answers = answers + more_answers
+
+        if plant:
+            plant_list.append(plant)
+            answers = answers + more_answers
+        else: 
+            return False
 
     plants = [{'correct_answer': plant['common_name'], 
                'url': plant['image_url'], 
@@ -37,6 +48,8 @@ def create_quiz(family):
 
 
 def get_data(page, family_url):
+    """get data from single trefle.io page of data"""
+
     plant_url = f'{family_url}&page={page}'
 
     try:
@@ -51,12 +64,13 @@ def get_data(page, family_url):
         return (common_names, random_plant)
 
     except:
-        return False
+        return (False, False)
 
 
 def clean(plant_list):
     """Remove labeled images of dried plants. 
     Most of these have a URL containing the string below"""
+
     clean_list = []
     for plant in plant_list:
         url = plant["image_url"]
@@ -66,32 +80,36 @@ def clean(plant_list):
 
 
 def get_url(family):
-    url = f'{BASE_URL}?token={TOKEN}&filter_not[common_name]=null&filter_not[image_url]=null'
+    """Get base url for list of plants from given family"""
+
+    url = f'{BASE_URL}?token={TOKEN}'
+    url += '&filter_not[common_name]=null&filter_not[image_url]=null'
     if family != 'general':
         url += f'&filter[family_common_name]={family}'
     return url
 
 
 def get_range(family):
-    if family == 'general':
-        return 820
-    else:
-        return get_page_total(family)
+    """get max page number for search results for given family.
+    If error in api call, return 0"""
+
+    try:
+        first_page = requests.get(get_url(family)).json()
+        last_page_num = first_page["links"]["last"].split('page=')[1]
+        return int(last_page_num)
+    except:
+        return 0
 
 
 def get_plant_info(slug):
-    plant_url = f'{BASE_URL}/{slug}?token={TOKEN}'
-    return requests.get(plant_url).json()["data"]
-    
+    """Get info for specific plant"""
 
-def get_page_total(family):
-    plant_url = f'{BASE_URL}/?token={TOKEN}&filter_not[common_name]=null&filter_not[image_url]=null'
+    plant_url = f'{BASE_URL}/{slug}?token={TOKEN}'
+
     try:
-        explore = requests.get(plant_url + f'&filter[family_common_name]={family}').json()
-        last_page = explore["links"]["last"].split('page=')[1]
-        return int(last_page)
+        return requests.get(plant_url).json()["data"]
     except:
-        return 0
+        return False
 
 
 def explore_families(family):
@@ -105,19 +123,30 @@ def explore_families(family):
     except:
         print('Something went wrong')
 
+
 def create_seed_quizzes(file_name, family, num):
-    """Export to csv data for 'num' quizzes from given family to seed database."""
+    """Export to csv data for 'num' quizzes from given family 
+    to use to seed database or to add in bulk later.
+    If there is an error in the creation, 
+    the file will be empty except for headers"""
 
     with open(f'{file_name}.csv', 'w') as question_csv:
-        question_headers = ['url', 'correct_answer', 'wrong_answer_1', 'wrong_answer_2',
-                            'wrong_answer_3', 'slug']
+        question_headers = ['url', 
+                            'correct_answer', 
+                            'wrong_answer_1', 
+                            'wrong_answer_2',
+                            'wrong_answer_3', 
+                            'slug']
         question_writer = csv.DictWriter(question_csv, fieldnames=question_headers)
         question_writer.writeheader()
 
         for i in range(num):
             questions = create_quiz(family)
-            for question in questions:
-                question_writer.writerow(question)
+            if questions:
+                for question in questions:
+                    question_writer.writerow(question)
 
 
-# explore_families("Aster family")
+# create_seed_quizzes('pea_3', 'Pea family', 3)
+# explore_families("Flax family")
+# print(f'{BASE_URL}/equisetum-hyemale?token={TOKEN}')

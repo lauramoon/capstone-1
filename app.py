@@ -1,7 +1,7 @@
 import os
 from flask import Flask
 from flask_debugtoolbar import DebugToolbarExtension
-from models.user import db, connect_db
+from models.model import db, connect_db
 
 
 CURR_USER_KEY = "curr_user"

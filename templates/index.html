@@ -5,12 +5,12 @@
 {% block content %}
 <h1>Plant Quizzes</h1>
 <h4>Can you identify plants from around the world? </h4>
-<h6>Test your knowledge and learn new things with simple quizzes.</h6>
+<h6>Test your knowledge and learn new things!</h6>
 
-<div class="row red lighten-4 z-depth-3 index-info">
+<div class="row red lighten-4 z-depth-3 main-content">
     <div class="col s12 l6">
         <h3>Take a Quiz</h3>
-        {% if quizzes | length > 4 %} {# (for tests with no quizzes) #}
+        {% if quizzes | length > 4 %} {# (for tests with few or no quizzes) #}
         {% for i in range(3 if g.user else 5) %}
         <p><a href="/quiz/{{quizzes[i].id}}" class="btn waves-effect waves-light">
             {{quizzes[i].family}} Quiz {{quizzes[i].num_by_family}}
@@ -33,9 +33,9 @@
         <a href="/login" class="waves-effect waves-light btn-large">Log In</a>
         <h6>to</h6>
         <div class="register-benefits">
-            <h5>Save your quiz results</h5>
-            <h5>Access additional quizzes</h5>
-            <h5>And more!</h5>
+            <h5><i class="fas fa-check"></i> Save your quiz results</h5>
+            <h5><i class="fas fa-check"></i> Access additional quizzes</h5>
+            <h5><i class="fas fa-check"></i> And more!</h5>
         </div>
         {% endif %}
     </div>

@@ -2,12 +2,14 @@
 import random
 from flask import g
 from models.user import db
-from models.quiz_models import Quiz
-from models.quiz_attempt_models import QuizAttempt, QuestionAttempt
+from models.quiz import Quiz
+from models.quiz_attempt import QuizAttempt, QuestionAttempt
 from forms import QuizForm
 
 
 def create_quiz_form(quiz):
+    """Create quiz form with all its question choices,
+    shuffle the choices for quiz page"""
 
     form = QuizForm()
     
@@ -25,7 +27,8 @@ def create_quiz_form(quiz):
 
 
 def get_quiz_results(quiz, form):
-    """Take quiz form and pull out results, saving if user logged in"""
+    """Take quiz form and pull out results, saving to database if user logged in"""
+
     results = []
     score = 0
 
@@ -40,7 +43,22 @@ def get_quiz_results(quiz, form):
     if g.user:
         save_quiz_results(results, score, quiz)
 
-    return results, score
+    return results, score, get_message(score)
+
+
+def get_message(score):
+    """Get message to display with score"""
+
+    messages = [
+        ["Here are the correct answers.", "You have a lot of studying to do."],
+        ["That's as good as randomly guessing!", "You can learn a lot studying the answers."],
+        ["That's better than random guessing!", "Study the answers to learn more!"],
+        ["Not Bad!", "Good try!"],
+        ["Great Job!", "You did very well!", "Very Good!"],
+        ["Perfectly Awesome!", "Perfect Job!", "Expert Job!"]
+    ]
+
+    return random.choice(messages[score//2])
 
 
 def save_quiz_results(results, score, quiz):
@@ -98,6 +116,7 @@ def get_latest_attempts():
 
 def get_user_plants():
     """Get list of plants user has seen in quizzes"""
+
     plants = []
     user_quizzes = g.user.quizzes
     for quiz in user_quizzes:

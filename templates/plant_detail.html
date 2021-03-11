@@ -4,31 +4,56 @@
 
 {% block content %}
 
-<div class="green lighten-4 z-depth-3">
+<div class="green lighten-4 z-depth-3 main-content">
+    {% if plant %}
     <h1>{{ plant.common_name | title }}</h1>
-        <img src="{{plant.image_url}}" 
+        <div class="main-img">
+            <img src="{{plant.image_url}}" 
             alt="{{ plant.common_name }}" 
-            class="center-image responsive-img z-depth-1">
-        <h5>Scientific name: <em>{{plant.scientific_name}}</em></h5>
-        <h5>Family: {{plant.family_common_name}}</h5>
-        {% if 'observations' in plant %}
-            <h5>Where it grows: {{plant.observations}}</h5>
-        {% endif %}
-    
-    {% if 'main_species' in plant %}
-        {% if plant.main_species.edible %}
-            <h5>This plant is edible.</h5>
-        {% endif %}
+            class="center-img responsive-img z-depth-1">
+        </div>
+
         <div class="row">
-            <div class="col s12">
-                <h5>Learn more on 
-                    <a href="https://en.wikipedia.org/w/index.php?title={{search_slug}}">Wikipedia</a>
-                </h5>
+            <div class="col s10 offset-s1 l8 offset-l2">
+                <h5>Scientific name: <em>{{plant.scientific_name}}</em></h5>
+                <h5>Family: {{plant.family_common_name}}</h5>
+                {% if 'observations' in plant %}
+                    <h5>Where it grows: {{plant.observations}}</h5>
+                {% endif %}
+            
+            {% if 'main_species' in plant %}
+                {% if plant.main_species.edible %}
+                    <h5>This plant is edible.</h5>
+                {% endif %}
+                {% if plant.main_species.common_names.en | length > 1 %}
+                <h5>Common Names:</h5>
+                <h6>
+                    {% for name in plant.main_species.common_names.en %}
+                    {{ name }}, 
+                    {% endfor %}
+                </h6>
+                {% endif %}
             </div>
         </div>
 
         <div class="row">
-            <div class="col s8 offset-s2 purple lighten-4 z-depth-2">
+            <div class="col s12">
+                <h5>Search the web for more: </h5>
+                <a href="https://en.wikipedia.org/w/index.php?title={{search_slug}}"
+                class="btn waves-effect waves-light"
+                target="_blank">
+                    <i class="fab fa-wikipedia-w"></i>ikipedia
+                </a>
+                <a href="http://www.google.com/search?q={{search_slug}}"
+                class="btn waves-effect waves-light"
+                target="_blank">
+                    <i class="fab fa-google"></i>oogle
+                </a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s10 offset-s1 l8 offset-l2 purple lighten-4 z-depth-2">
                 {% if 'images' in plant.main_species %}
                 <h3>Images</h3>
                 {% for (key, value) in plant.main_species.images.items() %}
@@ -36,11 +61,36 @@
                     <img src="{{ value[0].image_url }}" 
                         alt="{{plant.common_name}} {{key}}"
                         class="materialboxed center-img card-img responsive-img z-depth-1" 
+                        {% if value[0].copyright %}
+                        data-caption="{{ value[0].copyright }}"
+                        {% endif %}
                         width="300">
                 {% endfor %}
                 {% endif %}
             </div>
         </div>
+    {% endif %}
+    {% else %} {# if plant is false #}
+    <h2>Error - Unable to Access Plant Information</h2>
+    <h6>
+        Either the connection to the <a href="https://trefle.io/">Trefle API</a>
+         is down or the request was invalid.
+    </h6>
+    <div class="row">
+        <div class="col s12">
+            <h6>Please try again later or search elsewhere: </h6>
+            <a href="https://en.wikipedia.org/w/index.php?title={{search_slug}}"
+            class="btn waves-effect waves-light"
+            target="_blank">
+                <i class="fab fa-wikipedia-w"></i>ikipedia
+            </a>
+            <a href="http://www.google.com/search?q={{search_slug}}"
+            class="btn waves-effect waves-light"
+            target="_blank">
+                <i class="fab fa-google"></i>oogle
+            </a>
+        </div>
+    </div>
     {% endif %}
 </div>
 

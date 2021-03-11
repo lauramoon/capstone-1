@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}New Quiz{% endblock %}
+
+{% block content %}
+
+  <div class="row purple lighten-4 z-depth-3 main-content">
+    <div class="col s10 offset-s1 l8 offset-l2">
+      <h2>Request New Quiz</h2>
+      <h5>Congratulations! You have taken enough quizzes to request
+          a quiz from the plant family you select below.
+      </h5>
+      <h6>A 'general' quiz has no restrictions on plant family.</h6>
+      <form method="POST" id="new-quiz-form">
+          {{ form.hidden_tag() }}
+  
+          <div class="input-field">
+            
+            {% for error in form.family.errors %}
+              <span class="red-text">{{ error }}</span>
+            {% endfor %}
+            {{ form.family }}
+            <label class="grey-text text-darken-2">Select Plant Family</label>
+          </div>
+          
+        <button class="btn waves-effect waves-light">Request Quiz
+        </button>
+      </form>
+      <h5>Warning: this could take up to 30 seconds. Please be patient.</h5>
+      <h6>For every 10 different quizzes you take, you may request
+        the creation of one additional quiz.
+      </h6>
+    </div>
+  </div>
+
+
+
+{% endblock %}

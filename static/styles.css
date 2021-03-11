@@ -1,21 +1,26 @@
-.page-content {
-    text-align: center;
+.flex-wrapper {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .nav-wrapper {
     padding-left: 3%;
     padding-right: 3%;
-    background-color: #2ab7a9;
+    background-color: #ffcc80;
 }
 
-.chip{
+.chip {
     font-size: 1.5rem;
     margin-top: 20px;
 }
 
-.index-info {
+.main-content {
     margin-top: 40px;
-    padding-bottom: 20px;
+    padding-top: 10px;
+    padding-bottom: 30px;
+    margin-bottom: 40px;
 }
 
 .register-benefits {
@@ -31,6 +36,11 @@
     max-height: 350px;
 }
 
+.main-img {
+    max-width: 90%;
+    margin: auto;
+}
+
 .choice-span {
     padding-left: 25px;
     padding-right: 15px;
@@ -40,12 +50,7 @@
 .quiz-submit {
     display: block;
     text-align: center;
-    margin: 10px auto;
-}
-
-.card-section {
-    margin-top: 20px;
-    padding-bottom: 20px;
+    margin: 10px auto 30px;
 }
 
 .user-div {
@@ -70,10 +75,26 @@
     padding-top: 10px;
 }
 
+.table-div {
+    margin: 20px;
+}
+
+.page-footer {
+    padding-left: 3%;
+    padding-right: 3%;
+    background-color: #ffcc80;
+    text-align: center;
+    padding-bottom: 40px;
+}
+
 .alert-danger {
     color: red;
 }
 
 .alert-success {
     color: #2ab7a9;
+}
+
+#new-quiz-form{
+    margin-top: 30px;
 }

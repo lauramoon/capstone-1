@@ -8,7 +8,7 @@
 import os
 from unittest import TestCase
 from models.user import db, User
-from models.quiz_models import Quiz, Question
+from models.quiz import Quiz, Question
 from add_questions import add_questions
 
 # set an environmental variable to use a different database for tests 

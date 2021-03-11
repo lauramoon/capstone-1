@@ -1,6 +1,10 @@
 """SQLAlchemy models for quiz and quiz questions"""
 
-from models.user import db
+from datetime import datetime
+from models.model import db
+from models.quiz_attempt import QuestionAttempt
+import sys
+sys.path.append('../')
 from generator.generator import create_quiz
 
 
@@ -13,6 +17,7 @@ def search_slug(context):
 def num_by_family(context):
     """Gives number to quiz based on how many quizzes of the same family 
     are already in the database"""
+
     family = context.get_current_parameters()['family']
     return len(Quiz.query.filter(Quiz.family==family).all()) + 1
 
@@ -39,6 +44,16 @@ class Quiz(db.Model):
         default=num_by_family
     )
 
+    created_on = db.Column(
+        db.DateTime,
+        default = datetime.now()
+    )
+
+    created_by = db.Column(
+        db.Text,
+        default = 'system'
+    )
+
     questions = db.relationship(
         'Question',
         secondary="quiz_questions",
@@ -52,11 +67,18 @@ class Quiz(db.Model):
 
     @classmethod
     def create(cls, family):
+        """Create new quiz from identified family.
+        If error in quiz creation, return False"""
+
+        questions = create_quiz(family)
+
+        if not questions:
+            return False
+
         quiz = Quiz(num_questions=10, family=family)
         db.session.add(quiz)
         db.session.commit()
 
-        questions = create_quiz(family)
         for question in questions:
             new_question = Question(**question)
             new_question.family = family

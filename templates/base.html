@@ -8,9 +8,12 @@
     
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="/static/materialize.css">
+    <link rel="stylesheet"
+        href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
     <link rel="stylesheet" href="/static/styles.css">
+    <link rel="shortcut icon" href="/static/favicon.ico">
 </head>
-<body class="amber lighten-4">
+<body class="yellow lighten-4 flex-wrapper">
     
     <nav>
         <div class="nav-wrapper">
@@ -27,7 +30,7 @@
         </div>
     </nav>
         
-    <div class="container page-content">
+    <main class="container center-align">
         <div>
             {% for category, message in get_flashed_messages(with_categories=True) %}
             <div class="chip alert-{{ category }} z-depth-2">{{ message }}</div>
@@ -35,14 +38,48 @@
         </div>
         {% block content %}
         {% endblock %}
-    </div>
+    </main>
 
+    <footer class="page-footer black-text z-depth-1">
+        <div class="container">
+            <div class="row">
+                <h6>© 2021 by Laura Moon</h6>
+            </div>
+            <div class="row">
+                <div class="col s4 xl2 offset-xl3">
+                    <a href="/about" class="black-text">
+                        <i class="fas fa-info-circle"></i> About
+                    </a>
+                </div>
+                <div class="col s4 xl2">
+                    <a href="https://github.com/lauramoon/capstone-1" 
+                    class="black-text"
+                    target="_blank">
+                        <i class="fab fa-github"></i> GitHub repo
+                    </a>
+                </div>
+                <div class="col s4 xl2">
+                    <a href="https://www.linkedin.com/in/laura-moon/" 
+                    class="black-text"
+                    target="_blank">
+                        <i class="fab fa-linkedin"></i> LinkedIn
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
     <script src="/static/materialize.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+      document.addEventListener('DOMContentLoaded', function() {
         var elems = document.querySelectorAll('.materialboxed');
         var instances = M.Materialbox.init(elems);
-        });
+      });
+    </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('select');
+        var instances = M.FormSelect.init(elems);
+      });
     </script>
 </body>
 </html>

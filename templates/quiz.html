@@ -6,7 +6,7 @@
 <h1>{{quiz.family | title}} Quiz {{ quiz.num_by_family }}</h1>
 <h4>What is the common name of each plant shown below?</h4>
 
-<div class="card-section">
+<div class="main-content">
 <form method="POST" id="quiz_form">
     {{ form.hidden_tag() }}
     <div class="row wrap-row">
@@ -38,5 +38,9 @@
     </div>
     <button class="btn waves-effect waves-light quiz-submit">See results</button>
 </form>
+<h6>
+  Quiz created on {{ quiz.created_on.strftime('%d %b %Y %I:%M%p') }} 
+  at the request of {{quiz.created_by}}
+</h6>
 </div>
 {% endblock %}

@@ -5,7 +5,8 @@
 {% block content %}
 <h1>{{quiz.family | title}} Quiz {{ quiz.num_by_family }}</h1>
 <h4>You got {{ score }} of 10 answers correct!</h4>
-<div class="card-section">
+<h4>{{ message }}</h4>
+<div class="main-content">
 <div class="row wrap-row">
 {% for i in range(quiz.num_questions) %}
     <div class="col s12 l6">
@@ -34,7 +35,6 @@
     </div>
 {% endfor %}
 </div>
-</div>
 
 {% if g.user %}
 <a href="/quiz/all" class="btn-large waves-effect waves-light">Try another quiz</a>
@@ -43,4 +43,10 @@
 {% else %}
 <a href="/" class="btn-large waves-effect waves-light">Try another quiz</a>
 {% endif %}
+<h6>
+    Quiz created on {{ quiz.created_on.strftime('%d %b %Y %I:%M%p') }} 
+    at the request of {{quiz.created_by}}
+  </h6>
+</div>
+
 {% endblock %}

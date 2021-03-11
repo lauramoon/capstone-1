@@ -5,15 +5,13 @@
 #    FLASK_ENV=production python -m unittest test_other_views.py
 
 
-from models.quiz_attempt_models import QuestionAttempt
 import os
 from unittest import TestCase
-from unittest.mock import patch
-from contextlib import contextmanager
 from flask import appcontext_pushed, g
-from models.user import db, connect_db, User
-from models.quiz_models import Quiz
-from models.quiz_attempt_models import QuizAttempt
+from models.model import db, connect_db
+from models.user import User
+from models.quiz import Quiz
+from models.quiz_attempt import QuizAttempt, QuestionAttempt
 from add_questions import add_questions
 from routes.route_helpers import save_quiz_results
 
@@ -86,9 +84,9 @@ class UserViewTestCase(TestCase):
             html = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
-            self.assertIn('<td>Test Family Quiz 1</td>', html)
+            self.assertIn('<td><a href="/quiz/', html)
             self.assertIn('<td>1 of 10</td>', html)
-            self.assertIn('href="/user/plants" class="btn-large waves-effect waves-light">Review', html)
+            self.assertIn('href="/user/plants" class="btn-large waves-effect waves-light">', html)
 
 
     def test_user_plants(self):

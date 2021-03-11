@@ -1,18 +1,10 @@
-"""SQLAlchemy user model and db connection for PlantQuizzes."""
+"""User model"""
 
 from flask_bcrypt import Bcrypt
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import backref
-
+from models.model import db
+from models.quiz_attempt import QuizAttempt
 
 bcrypt = Bcrypt()
-db = SQLAlchemy()
-
-def connect_db(app):
-    """Connect database to Flask app"""
-
-    db.app = app
-    db.init_app(app)
 
 
 class User(db.Model):
@@ -36,6 +28,11 @@ class User(db.Model):
         nullable=False,
     )
 
+    num_quizzes_created = db.Column(
+        db.Integer,
+        default=0
+    )
+
     quizzes = db.relationship(
         'Quiz',
         secondary="quiz_attempts",
@@ -50,6 +47,12 @@ class User(db.Model):
 
     def __repr__(self):
         return f"<User #{self.id}: {self.username}>"
+
+
+    def is_new_quiz_eligible(self):
+        """User may request creation of one new quiz
+        for every 10 different quizzes taken."""
+        return self.num_quizzes_created * 10 + 10 <= len(self.quizzes)
 
 
     @classmethod

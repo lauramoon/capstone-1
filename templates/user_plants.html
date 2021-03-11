@@ -5,10 +5,9 @@
 {% block content %}
 
 <h1>{{g.user.username}}'s Plants</h1>
-<h4>You have seen all the plants below in quizzes you have taken</h4>
+<h4>Plants in quizzes you have taken</h4>
 
-<div class="image-section">
-    <div class="row wrap-row">
+<div class="row wrap-row main-content">
     {% for plant in plants %}
         <div class="col s12 m6 xl4">
             <div class="card-panel green lighten-4 z-depth-3 plant-card">
@@ -28,7 +27,6 @@
         </div>
 
     {% endfor %}
-    </div>
 </div>
 
 {% endblock %}

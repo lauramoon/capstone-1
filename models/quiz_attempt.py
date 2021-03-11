@@ -1,9 +1,11 @@
+"""Models for quiz attempts by a user with associated question attempts"""
+
 from datetime import datetime
 
-from models.user import db
+from models.model import db
 
 class QuizAttempt(db.Model):
-    """Quiz attemps by a user"""
+    """Quiz attempts by a user"""
 
     __tablename__ = 'quiz_attempts' 
 
@@ -25,7 +27,7 @@ class QuizAttempt(db.Model):
     timestamp = db.Column(
         db.DateTime,
         nullable=False,
-        default=datetime.utcnow()
+        default=datetime.now()
     )
 
     num_correct = db.Column(db.Integer)
@@ -36,7 +38,7 @@ class QuizAttempt(db.Model):
     )
 
 class QuestionAttempt(db.Model):
-    """Map quiz attempt to questions, mark if correct"""
+    """Maps quiz attempt to quiz questions, mark if correct"""
 
     __tablename__ = 'question_attempts'
 

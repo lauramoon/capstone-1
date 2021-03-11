@@ -5,35 +5,53 @@
 {% block content %}
 
 <h1>{{g.user.username}}'s Quizzes</h1>
+{% if g.user.is_new_quiz_eligible() %}
+<a href="/quiz/new" class="btn-large waves-effect waves-light">
+    Create new quiz
+</a>
+{% endif %}
 
-<div class="red lighten-4 z-depth-3 user-quizzes">
-<table class="striped">
-    <thead>
-        <tr>
-            <th>Quiz Name</th>
-            <th>Latest Result</th>
-            <th>Taken On</th>
-            <th>Total Attempts</th>
-            <th>Average Score</th>
-            <th>Try Again</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for attempt in latest_attempts %}
-        <tr>
-            <td>{{ attempt.quiz.family | title }} Quiz {{ attempt.quiz.num_by_family }}</td>
-            <td>{{ attempt.latest }} of {{ attempt.quiz.num_questions }}</td>
-            <td>{{ attempt.timestamp }}</td>
-            <td>{{ attempt.num_attempts}}</td>
-            <td>{{ attempt.average}} of 10</td>
-            <td><a href="/quiz/{{attempt.quiz.id}}" class="btn waves-effect waves-light">
-                Take Again
-            </a></td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<div class="row red lighten-4 z-depth-3 main-content">
+    {% if latest_attempts | length == 0 %}
+    <h3>You have not taken any quizzes yet.</h3>
+    {% else %}
+    <div class="col s12 table-div">
+    <table class="striped">
+        <thead>
+            <tr>
+                <th>Quiz Name</th>
+                <th>Latest Result</th>
+                <th>Taken On</th>
+                <th>Total Tries</th>
+                <th>Average Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for attempt in latest_attempts %}
+            <tr>
+                <td><a href="/quiz/{{attempt.quiz.id}}" 
+                    class="btn waves-effect waves-light">
+                    {{ attempt.quiz.family | title }}
+                     Quiz {{ attempt.quiz.num_by_family }}
+                </a></td>
+                <td>{{ attempt.latest }} of {{ attempt.quiz.num_questions }}</td>
+                <td>{{ attempt.timestamp.strftime('%d %b %Y %I:%M%p') }}</td>
+                <td>{{ attempt.num_attempts}}</td>
+                <td>{{ attempt.average}} of 10</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    {% endif %}
+    <a href="/quiz/all" class="btn-large waves-effect waves-light">
+        See all available quizzes
+    </a>
+    {% if latest_attempts | length != 0 %}
+    <a href="/user/plants" class="btn-large waves-effect waves-light">
+        Review plants
+    </a>
+    {% endif %}
 </div>
-<a href="/quiz/all" class="btn-large waves-effect waves-light">See all available quizzes</a>
-<a href="/user/plants" class="btn-large waves-effect waves-light">Review plants</a>
+
 {% endblock %}

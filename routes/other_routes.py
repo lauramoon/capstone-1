@@ -4,11 +4,10 @@ from functools import wraps
 from flask import render_template, flash, redirect, session, g
 from app import app, CURR_USER_KEY
 from models.user import db, User
-from models.quiz_models import Quiz
-from models.quiz_attempt_models import QuizAttempt
-from forms import QuizForm
+from models.quiz import Quiz
+from forms import QuizCreationForm
 from generator.generator import get_plant_info
-from routes.route_helpers import get_quiz_families, get_user_plants, get_latest_attempts, create_quiz_form, get_quiz_results
+import routes.route_helpers as r
 
 # All routes other than user account-related routes
 
@@ -49,37 +48,65 @@ def show_quiz(num):
 
     quiz = Quiz.query.get_or_404(num)
 
+    # Only logged-in users may access quizzes beyond the first 5 general qizzes
     if not g.user and (quiz.num_by_family > 5 or quiz.family != 'general'):
-        # Only logged-in users may access quizzes beyond the first 5 general qizzes
         flash("Please sign up or log in to access that quiz.", "danger")
         return redirect('/')
 
-    form = create_quiz_form(quiz) 
+    form = r.create_quiz_form(quiz) 
 
     if form.validate_on_submit():
 
-        results, score = get_quiz_results(quiz, form)
+        results, score, message = r.get_quiz_results(quiz, form)
 
-        return render_template('results.html', quiz=quiz, results=results, score=score)
+        return render_template(
+            'results.html', 
+            quiz=quiz, 
+            results=results, 
+            score=score, 
+            message=message)
 
     return render_template('quiz.html', form=form, quiz=quiz)
 
 
 @app.route('/plant/<slug>')
 def plant_detail(slug):
-    """Show details about plant"""
+    """Show details about plant. 
+    Plant will be 'False' if API call fails. This is handled in the template."""
+
     plant = get_plant_info(slug)
     search_slug = slug.replace('-', '+')
-    return render_template('plant_detail.html', plant=plant, search_slug=search_slug)
+
+    return render_template('plant_detail.html', 
+                        plant=plant, 
+                        search_slug=search_slug)
 
 
-@app.route('/quiz/new')
+@app.route('/quiz/new', methods=["GET", "POST"])
 @checkuser
 def new_quiz():
-    """Create new quiz."""
+    """Create new quiz, available to users who have taken enough quizzes."""
 
-    quiz = Quiz.create('general')
-    return redirect(f'/quiz/{quiz.id}')
+    if not g.user.is_new_quiz_eligible():
+        num = g.user.num_quizzes_created*10 + 10 - len(g.user.quizzes)
+        flash(f"Take {num} more quizzes to create new quiz.")
+        return redirect('/')
+
+    form = QuizCreationForm()
+
+    if form.validate_on_submit():
+        quiz = Quiz.create(form.family.data)
+
+        if quiz:
+            quiz.created_by = g.user.username
+            db.session.commit()
+            flash("Quiz successfully created!", "success")
+            return redirect(f'/quiz/{quiz.id}')
+
+        else:
+            flash("Something went wrong. Please try again later.")
+
+    return render_template('create_quiz.html', form=form)
 
 
 @app.route('/quiz/all')
@@ -87,13 +114,13 @@ def new_quiz():
 def all_quizzes():
     """Show all available quizzes grouped by quiz family if logged-in user."""
 
-    return render_template('all_quizzes.html', quiz_families=get_quiz_families())
+    return render_template('all_quizzes.html', quiz_families=r.get_quiz_families())
 
 
 @app.route('/user/quizzes')
 @checkuser
 def user_quizzes():
-    latest_attempts = get_latest_attempts()
+    latest_attempts = r.get_latest_attempts()
 
     return render_template('user_quizzes.html', latest_attempts=latest_attempts)
 
@@ -102,6 +129,13 @@ def user_quizzes():
 @checkuser
 def user_page_plants():
     """Return page with list of plants user has seen in quizzes"""
-    plants = get_user_plants()
+    plants = r.get_user_plants()
 
     return render_template('user_plants.html', plants=plants)
+
+
+@app.route('/about')
+def about_page():
+    """Return about page"""
+
+    return render_template('about.html')

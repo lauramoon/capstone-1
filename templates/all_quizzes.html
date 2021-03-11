@@ -5,27 +5,31 @@
 {% block content %}
 
 <h1>All Available Quizzes</h1>
-
-<div class="image-section">
-    <div class="row">
-    {% for family in quiz_families %}
-        <div class="col s12 m6">
-            <div class="card-panel green lighten-4 z-depth-3">
-                
-                <h3>{{ family.name | title }}</h3>
-                
-                {% for quiz in family.quizzes %}
-                    <p><a href="/quiz/{{quiz.id}}" class="btn waves-effect waves-light">
-                        {{family.name}} Quiz {{quiz.num_by_family}}
-                    </a></p>
-                {% endfor %}
-                
-            </div>
-    
+<h6>
+    <i class="fas fa-check"></i> = You've tried this quiz before.
+</h6>
+<div class="row row-wrap main-content">
+{% for family in quiz_families %}
+    <div class="col s12 m6">
+        <div class="card-panel green lighten-4 z-depth-3">
+            
+            <h3>{{ family.name | title }}</h3>
+            
+            {% for quiz in family.quizzes %}
+                <p>
+                    <a href="/quiz/{{quiz.id}}" class="btn waves-effect waves-light">
+                    {{family.name}} Quiz {{quiz.num_by_family}}
+                    </a>
+                    {% if quiz in g.user.quizzes %}
+                        <i class="fas fa-check"></i>
+                    {% endif %}
+                </p>
+            {% endfor %}
+            
         </div>
-
-    {% endfor %}
     </div>
+
+{% endfor %}
 </div>
 
 {% endblock %}

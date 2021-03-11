@@ -7,8 +7,9 @@
 
 import os
 from unittest import TestCase
-from models.user import db, connect_db, User
-from models.quiz_models import Quiz
+from models.model import db, connect_db
+from models.user import User
+from models.quiz import Quiz
 from add_questions import add_questions
 
 

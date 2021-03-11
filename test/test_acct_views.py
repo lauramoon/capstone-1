@@ -7,7 +7,8 @@
 
 import os
 from unittest import TestCase
-from models.user import db, connect_db, User
+from models.model import db, connect_db
+from models.user import User
 from sqlalchemy.exc import IntegrityError, InvalidRequestError
 
 
@@ -72,7 +73,7 @@ class AcctViewTestCase(TestCase):
             html = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
-            self.assertIn('<h2>Create an account.</h2>', html)
+            self.assertIn('<h3>Create an account</h3>', html)
             self.assertIn('<button class="btn waves-effect waves-light">Sign me up!</button>', html)
 
     def test_add_user_success(self):
