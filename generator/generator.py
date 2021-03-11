@@ -1,11 +1,15 @@
 import requests
 import random
 import csv
+import os
 import sys
 sys.path.append('../')
-import config
+try: 
+    import config
+except:
+    pass
 
-TOKEN = config.TREFLE_TOKEN
+TOKEN = os.getenv("TREFLE_TOKEN", config.TREFLE_TOKEN)
 BASE_URL = f'https://trefle.io/api/v1/plants'
 
 
