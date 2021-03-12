@@ -1,6 +1,6 @@
 ## Plant Quizzes
 
-This repo contains the files for my first capstone project. It is a web app that provides quizzes to test the user's ability to recognize images of plants. See [proposal.md](proposal.md) for more details on the original plan.
+This repo contains the files for my first capstone project. It is a web app that provides quizzes to test the user's ability to recognize images of plants. 
 
 A live version of the app is deployed on Heroku here: https://plant-quizzes.herokuapp.com/.
 
@@ -26,7 +26,9 @@ SQLAlchemy is the ORM connecting the database to the Flask app.
 
 The website is a Flask app. Forms use WTForms and password encryption uses Bcrypt. All of the pages are served with jinja2 templates. 
 
-On the frontend, the [Materialize] (https://materializecss.com/) framework takes care of most of the styling.
+On the frontend, the Materialize framework (https://materializecss.com)  takes care of most of the styling.
+
+If you're curious, [proposal.md](proposal.md) has more details on the original plan.
 
 ### To Use
 
