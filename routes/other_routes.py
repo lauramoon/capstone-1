@@ -99,6 +99,7 @@ def new_quiz():
 
         if quiz:
             quiz.created_by = g.user.username
+            g.user.num_quizzes_created += 1
             db.session.commit()
             flash("Quiz successfully created!", "success")
             return redirect(f'/quiz/{quiz.id}')
