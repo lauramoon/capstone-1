@@ -4,6 +4,10 @@ Quiz
 -
 id PK
 num_questions int
+family string
+num_by_family int
+created_on datetime
+create_by string
 
 Quiz_attempt
 -
@@ -18,6 +22,7 @@ User
 id PK
 username string
 password string
+num_quizzes_created int
 
 Quiz_questions
 -
@@ -34,6 +39,8 @@ correct_answer string
 wrong_answer_1 string
 wrong_answer_2 string
 wrong_answer_3 string
+slug string
+search_slug string
 
 Question_attempt
 -
