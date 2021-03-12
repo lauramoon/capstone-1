@@ -87,6 +87,7 @@ def get_quiz_families():
         quiz_family['name'] = family[0]
         quiz_family['quizzes'] = Quiz.query.filter(Quiz.family==family[0])
         quiz_families.append(quiz_family)
+    quiz_families.reverse()
     return quiz_families
 
 
