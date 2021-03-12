@@ -37,6 +37,7 @@ class QuizCreationForm(FlaskForm):
                'Mustard family',
                'Pea family',
                'Rose family',
+               'Sedge family',
                'Spurge family'
                ]
     family = SelectField('Family', choices=choices)
