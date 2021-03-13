@@ -21,5 +21,7 @@ toolbar = DebugToolbarExtension(app)
 
 connect_db(app)
 
-import routes.acct_routes
-import routes.other_routes
+import routes.user_routes
+import routes.quiz_routes
+import routes.plant_routes
+import routes.site_routes

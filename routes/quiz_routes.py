@@ -6,7 +6,6 @@ from app import app, CURR_USER_KEY
 from models.user import db, User
 from models.quiz import Quiz
 from forms import QuizCreationForm
-from generator.generator import get_plant_info
 import routes.route_helpers as r
 
 # All routes other than user account-related routes
@@ -34,14 +33,6 @@ def checkuser(func):
     return wrapper
 
 
-@app.route('/')
-def show_homepage():
-    """Show homepage with links to quizzes available to anyone"""
-
-    quizzes = Quiz.query.order_by(Quiz.id).limit(5).all()
-    return render_template('index.html', quizzes=quizzes)
-
-
 @app.route('/quiz/<int:num>', methods=["GET", "POST"])
 def show_quiz(num):
     """Return quiz with specified id"""
@@ -67,19 +58,6 @@ def show_quiz(num):
             message=message)
 
     return render_template('quiz.html', form=form, quiz=quiz)
-
-
-@app.route('/plant/<slug>')
-def plant_detail(slug):
-    """Show details about plant. 
-    Plant will be 'False' if API call fails. This is handled in the template."""
-
-    plant = get_plant_info(slug)
-    search_slug = slug.replace('-', '+')
-
-    return render_template('plant_detail.html', 
-                        plant=plant, 
-                        search_slug=search_slug)
 
 
 @app.route('/quiz/new', methods=["GET", "POST"])
@@ -133,10 +111,3 @@ def user_page_plants():
     plants = r.get_user_plants()
 
     return render_template('user_plants.html', plants=plants)
-
-
-@app.route('/about')
-def about_page():
-    """Return about page"""
-
-    return render_template('about.html')
