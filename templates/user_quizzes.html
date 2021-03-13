@@ -35,7 +35,9 @@
                      Quiz {{ attempt.quiz.num_by_family }}
                 </a></td>
                 <td>{{ attempt.latest }} of {{ attempt.quiz.num_questions }}</td>
-                <td>{{ attempt.timestamp.strftime('%d %b %Y %I:%M%p') }}</td>
+                <td class='datetime'> 
+                    {{ attempt.timestamp }}
+                </td>
                 <td>{{ attempt.num_attempts}}</td>
                 <td>{{ attempt.average}} of 10</td>
             </tr>

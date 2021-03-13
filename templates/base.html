@@ -12,6 +12,7 @@
         href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
     <link rel="stylesheet" href="/static/styles.css">
     <link rel="shortcut icon" href="/static/favicon.ico">
+    
 </head>
 <body class="yellow lighten-4 flex-wrapper">
     
@@ -81,5 +82,13 @@
         var instances = M.FormSelect.init(elems);
       });
     </script>
-</body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js"></script>
+    <script>
+        let elems = document.querySelectorAll('.datetime')
+        for (elem of elems) {
+            utc = moment.utc(elem.innerText);
+            elem.innerText = moment(utc).local().format('LLL');
+        }
+    </script>
+    </body>
 </html>

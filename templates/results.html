@@ -44,7 +44,7 @@
 <a href="/" class="btn-large waves-effect waves-light">Try another quiz</a>
 {% endif %}
 <h6>
-    Quiz created on {{ quiz.created_on.strftime('%d %b %Y %I:%M%p') }} 
+    Quiz created on <span class="datetime">{{ quiz.created_on }}</span>  
     at the request of {{quiz.created_by}}
   </h6>
 </div>

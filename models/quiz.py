@@ -46,7 +46,7 @@ class Quiz(db.Model):
 
     created_on = db.Column(
         db.DateTime,
-        default = datetime.now()
+        default = datetime.utcnow
     )
 
     created_by = db.Column(

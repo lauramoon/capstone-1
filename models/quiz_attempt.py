@@ -27,7 +27,7 @@ class QuizAttempt(db.Model):
     timestamp = db.Column(
         db.DateTime,
         nullable=False,
-        default=datetime.now()
+        default=datetime.utcnow
     )
 
     num_correct = db.Column(db.Integer)
